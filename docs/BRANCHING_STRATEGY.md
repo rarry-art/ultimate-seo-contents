@@ -1,47 +1,51 @@
 # GitLab Flow 브랜치 전략
 
 ## 개요
-이 프로젝트는 GitLab Flow 브랜치 전략을 따릅니다. GitLab Flow는 Git Flow의 복잡성을 줄이고, GitHub Flow의 단순함을 개선한 전략입니다.
+GitLab Flow는 GitFlow의 복잡성을 줄이고 feature-driven development와 이슈 트래킹을 결합한 간단하고 효과적인 브랜치 전략입니다. 이 전략은 릴리즈, 태깅, 병합의 오버헤드를 줄여 개발 프로세스를 간소화합니다.
+
+## GitLab Flow의 특징
+- 모든 기능과 수정사항은 `main` 브랜치로 직접 통합됩니다.
+- 프로덕션과 안정화 브랜치를 활용하여 안전한 배포를 보장합니다.
+- 이슈 트래킹 시스템과 통합되어 협업 효율성을 높입니다.
+- 코드 리뷰 프로세스를 통해 품질을 보장합니다.
 
 ## 주요 브랜치
-- `main`: 프로덕션 환경에 배포되는 안정적인 코드
-- `staging`: QA 및 테스트 환경
-- `development`: 개발자들의 기능 개발 브랜치가 병합되는 곳
+- `main`: 기본 개발 브랜치이자 모든 기능이 통합되는 곳
+- `production`: 실제 프로덕션 환경에 배포되는 안정적인 코드
+- `pre-production`: 프로덕션 배포 전 최종 테스트를 위한 브랜치
+
+필요에 따라 추가 환경 브랜치를 생성할 수 있습니다:
+- `test` → `acceptance` → `production`
 
 ## 브랜치 명명 규칙
-- 기능 개발: `feature/기능명`
-  - 예: `feature/add-seo-analytics`
-- 버그 수정: `bugfix/버그명`
-  - 예: `bugfix/fix-header-layout`
-- 긴급 수정: `hotfix/버그명`
-  - 예: `hotfix/critical-security-issue`
+- 기능 개발: `feature/이슈번호-기능명`
+  - 예: `feature/123-add-seo-analytics`
+- 버그 수정: `bugfix/이슈번호-버그명`
+  - 예: `bugfix/456-fix-header-layout`
+- 릴리스 버전: `release/버전명`
+  - 예: `release/v1.0.0`
 
 ## 작업 프로세스
 
 ### 1. 기능 개발
-1. `development` 브랜치에서 새로운 `feature` 브랜치 생성
+1. `main` 브랜치에서 새로운 `feature` 브랜치 생성
 2. 기능 개발 및 커밋
-3. 개발 완료 후 `development` 브랜치로 Merge Request 생성
-4. 코드 리뷰 후 승인되면 `development`에 병합
+3. 개발 완료 후 `main` 브랜치로 Merge Request 생성
+4. 코드 리뷰 후 승인되면 `main`에 병합
 
-### 2. 스테이징 배포
-1. `development` 브랜치의 변경사항을 `staging` 브랜치로 병합
-2. QA 팀의 테스트 진행
-3. 이슈 발견 시 `bugfix` 브랜치 생성하여 수정
+### 2. 프로덕션 배포
+1. `main` 브랜치의 코드가 배포 준비가 되면 `pre-production` 브랜치로 병합
+2. `pre-production`에서 최종 테스트 및 버그 수정
+3. 테스트 완료 후 `production` 브랜치로 병합하여 배포
 
-### 3. 프로덕션 배포
-1. `staging` 브랜치에서 충분한 테스트 완료
-2. `staging`의 변경사항을 `main` 브랜치로 병합
-3. `main` 브랜치에서 프로덕션 배포
-
-### 4. 긴급 수정
-1. `main` 브랜치에서 `hotfix` 브랜치 생성
-2. 수정 작업 진행
-3. `main`, `staging`, `development` 브랜치에 모두 병합
+### 3. 버전 관리
+- 필요한 경우 여러 버전을 동시에 관리할 수 있습니다
+- 예: `v1` 브랜치와 `v2` 브랜치를 별도로 유지보수
+- 각 버전에서 발견된 버그는 해당 버전 브랜치에서 수정
 
 ## 커밋 메시지 규칙
 ```
-type: 제목
+type(scope): 제목
 
 본문
 
@@ -60,9 +64,18 @@ footer(optional)
 ## 코드 리뷰
 - 모든 코드 변경은 Merge Request를 통해 진행
 - 최소 1명 이상의 리뷰어 승인 필요
-- 모든 CI/CD 파이프라인 통과 필요
+- 자동화된 테스트 통과 필요
+- 명확한 리뷰 기준과 체크리스트 사용
 
 ## 배포 프로세스
-1. `development` → 자동 배포 to 개발 서버
-2. `staging` → 자동 배포 to 스테이징 서버
-3. `main` → 수동 승인 후 배포 to 프로덕션 서버 
+1. `main` → 자동 배포 to 개발 서버
+2. `pre-production` → 자동 배포 to 스테이징 서버
+3. `production` → 수동 승인 후 배포 to 프로덕션 서버
+
+## GitLab Flow의 장점
+- 간단하고 투명한 워크플로우
+- 여러 버전의 소프트웨어를 효과적으로 관리
+- 릴리즈, 태깅, 병합 오버헤드 감소
+- 모든 환경에서 코드 테스트 보장
+- 팀 규모에 관계없이 적용 가능
+- 다양한 요구사항에 유연하게 대응
