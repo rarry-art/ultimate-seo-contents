@@ -1,36 +1,93 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Ultimate SEO Contents Generator
 
-## Getting Started
+AI 기반의 SEO 최적화된 콘텐츠 자동 생성 시스템입니다.
 
-First, run the development server:
+## 주요 기능
 
+- 🤖 AI 기반 콘텐츠 생성
+  - Claude AI를 활용한 고품질 콘텐츠 작성
+  - Perplexity AI를 통한 팩트체크 및 SEO 최적화
+  - Google Trends API 연동으로 실시간 트렌드 반영
+
+- 📊 SEO 최적화
+  - 롱테일 키워드 자동 생성
+  - 메타 데이터 최적화
+  - 구조화된 콘텐츠 포맷
+
+- 🎯 자동화된 프로세스
+  1. 키워드 분석
+  2. 롱테일 키워드 생성
+  3. 콘텐츠 구조화
+  4. 본문 생성
+  5. 팩트체크
+  6. SEO 최적화
+
+## 시작하기
+
+1. 환경 설정
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# 환경 변수 설정
+CLAUDE_API_KEY=your_claude_api_key
+PERPLEXITY_API_KEY=your_perplexity_api_key
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. 의존성 설치
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. 개발 서버 실행
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. API 엔드포인트 사용
+```bash
+curl -X POST http://localhost:3000/api/generate \
+  -H "Content-Type: application/json" \
+  -d '{"keyword": "your_keyword"}'
+```
 
-## Learn More
+## API 명세
 
-To learn more about Next.js, take a look at the following resources:
+### POST /api/generate
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+콘텐츠 생성 요청
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Request Body**
+```json
+{
+  "keyword": "string" // 생성할 콘텐츠의 주제 키워드
+}
+```
 
-## Deploy on Vercel
+**Response**
+```json
+{
+  "success": true,
+  "data": {
+    "slug": "string",
+    "title": "string",
+    "content": "string",
+    "description": "string",
+    "publishedAt": "string",
+    "seo": {
+      "title": "string",
+      "description": "string",
+      "keywords": ["string"]
+    }
+  }
+}
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 기술 스택
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Next.js 14
+- TypeScript
+- Claude AI API
+- Perplexity AI API
+- Google Trends API
+
+## 라이센스
+
+MIT License
